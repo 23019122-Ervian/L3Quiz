@@ -1,23 +1,100 @@
 import React, { useState } from 'react';
-import { Image, Text, View, TextInput, ScrollView, Button, Alert } from 'react-native';
+import { Image, Text, View, TextInput, ScrollView, Button, Alert, StatusBar, StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Icon from "react-native-vector-icons/FontAwesome6"
 
 // Reusable Question component
 const Question = ({ questionText, imageSource, options, onAnswerSelect }) => {
     return (
-        <View>
-            <Text>{questionText}</Text>
-            <Image source={imageSource} />
-            <Text>Answer:</Text>
+        <View style={styles.questionContainer}>
+            <Image source={imageSource} style={styles.image} />
+            <Text style={styles.questionText}>{questionText}</Text>
+            <Text style={styles.answerText}>Answer:</Text>
             <RNPickerSelect
                 onValueChange={onAnswerSelect}
                 items={options}
                 placeholder={{ label: "Select an answer", value: null }}
+                style={{
+                    inputAndroid: styles.pickerInput,
+                    inputIOS: styles.pickerInput,
+                }}
             />
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: '#fff',
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    icon: {
+        marginRight: 10,
+    },
+    headerText: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    scrollContainer: {
+        paddingBottom: 20,
+    },
+    label: {
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 10,
+        color: '#555',
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        marginBottom: 20,
+        fontSize: 16,
+    },
+    questionContainer: {
+        marginBottom: 30,
+        padding: 10,
+        backgroundColor: '#2374e7',
+        borderStyle: 'solid',
+        borderColor: '#000000',
+        borderWidth: 1
+    },
+    questionText: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 10,
+        color: '#333',
+        textAlign: "center"
+    },
+    image: {
+        width: '100%',
+        height: 200,
+        resizeMode: 'contain',
+        marginBottom: 10,
+    },
+    answerText: {
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 10,
+        color: '#333',
+    },
+    pickerInput: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        backgroundColor: '#fff',
+        fontSize: 16,
+    },
+});
 
 const App = () => {
     // State to store selected answers
@@ -46,15 +123,16 @@ const App = () => {
     };
 
     return (
-        <View style={{ padding: 20, paddingTop: 50 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-                <Icon name="music" size={24} color="#B23B23" style={{ marginRight: 10 }} />
-                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Music Quiz</Text>
+        <View style={styles.container}>
+            <StatusBar hidden={true} />
+            <View style={styles.header}>
+                <Icon name="music" size={24} color="#B23B23" style={styles.icon} />
+                <Text style={styles.headerText}>Music Quiz</Text>
             </View>
 
-            <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-                <Text>User Name:</Text>
-                <TextInput style={{ borderWidth: 1, marginBottom: 20 }} />
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <Text style={styles.label}>User Name:</Text>
+                <TextInput style={styles.input} />
 
                 {/* Question 1 */}
                 <Question
@@ -96,10 +174,13 @@ const App = () => {
                 <Button
                     title="Submit Answers"
                     onPress={handleSubmit}
+                    color="#B23B23"
                 />
             </ScrollView>
         </View>
     );
 };
+
+
 
 export default App;
